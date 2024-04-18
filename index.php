@@ -49,7 +49,6 @@ $f3->route('GET /menus/dinner', function() {
 
 // order1 route
 $f3->route('GET|POST /order1', function($f3) {
-    // echo '<h1>My Breakfast Menu</h1>';
     if($_SERVER['REQUEST_METHOD'] == "POST") {
 //        var_dump($_POST);
 
@@ -77,15 +76,29 @@ $f3->route('GET|POST /order1', function($f3) {
 
 // order2 route
 $f3->route('GET|POST /order2', function($f3) {
-    var_dump($f3->get('SESSION'));
-
     if($_SERVER['REQUEST_METHOD'] == "POST") {
+        $condiments = $_POST['conds'];
 
+        if(isset($condiments)) {
+            $condiments = implode(", ", $condiments);
+            $f3->set("SESSION.condiments", $condiments);
+        } else {
+            echo "ERROR";
+        }
+
+        $f3->reroute('summary');
     }
     // render a view page
     $view = new Template();
     echo $view->render('views/order2.html');
 
+});
+
+// order2 route
+$f3->route('GET /summary', function($f3) {
+// render a view page
+    $view = new Template();
+    echo $view->render('views/order-summary.html');
 });
 
 // run fat-free
