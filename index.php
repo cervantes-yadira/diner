@@ -51,15 +51,23 @@ $f3->route('GET /menus/dinner', function() {
 $f3->route('GET|POST /order1', function($f3) {
     // echo '<h1>My Breakfast Menu</h1>';
     if($_SERVER['REQUEST_METHOD'] == "POST") {
-//        echo "<p>POST</p>";
 //        var_dump($_POST);
 
         // get data from POST array
-        $food =$_POST['food'];
-        $meal =$_POST['meal'];
+        $food = $_POST['food'];
+        $meal = $_POST['meal'];
 
-        $f3->set('SESSION.food', $food);
-        $f3->set('SESSION.meal', $meal);
+        if(!empty($food) && isset($meal)) {
+
+            // add data to session array
+            $f3->set('SESSION.food', $food);
+            $f3->set('SESSION.meal', $meal);
+
+            // send user to order2
+            $f3->reroute('order2');
+        } else {
+            echo "<p>ERROR</p>";
+        }
     }
     // render a view page
     $view = new Template();
@@ -68,8 +76,12 @@ $f3->route('GET|POST /order1', function($f3) {
 });
 
 // order2 route
-$f3->route('GET /order2', function() {
-    // echo '<h1>My Breakfast Menu</h1>';
+$f3->route('GET|POST /order2', function($f3) {
+    var_dump($f3->get('SESSION'));
+
+    if($_SERVER['REQUEST_METHOD'] == "POST") {
+
+    }
     // render a view page
     $view = new Template();
     echo $view->render('views/order2.html');
