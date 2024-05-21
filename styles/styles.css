@@ -1,8 +1,7 @@
-h2 {
-    color: darkgrey;
+h1 {
+    color: darkgreen;
 }
 
-img {
-    width: 400px;
-    height: auto;
+.err {
+    color: darkred;
 }
